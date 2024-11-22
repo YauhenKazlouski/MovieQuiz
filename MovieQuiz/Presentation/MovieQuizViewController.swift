@@ -61,7 +61,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = true
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        yesButton.isEnabled = false
+        changeStateButton(isEnabled: false)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -69,7 +69,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = false
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        noButton.isEnabled = false
+        changeStateButton(isEnabled: false)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -98,10 +98,8 @@ final class MovieQuizViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuectionOrResults()
             self.imageView.layer.borderWidth = 0
-            self.yesButton.isEnabled = true
-            self.noButton.isEnabled = true
+            self.changeStateButton(isEnabled: true)
         }
-        
     }
     
     private func showNextQuectionOrResults() {
@@ -144,6 +142,10 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    private func changeStateButton(isEnabled: Bool) {
+        noButton.isEnabled = isEnabled
+        yesButton.isEnabled = isEnabled
+    }
     
 }
 //
