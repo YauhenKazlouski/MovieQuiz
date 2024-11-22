@@ -6,7 +6,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var yesButton: UIButton!
-    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
     
     private struct ViewModel {
         let image: UIImage
@@ -48,6 +48,7 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex: Int = .zero
     private var correctAnswers: Int = .zero
     
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +61,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = true
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        yesButton.isEnabled = false
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -67,6 +69,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = false
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        noButton.isEnabled = false
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -94,6 +97,9 @@ final class MovieQuizViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuectionOrResults()
+            self.imageView.layer.borderWidth = 0
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
         }
         
     }

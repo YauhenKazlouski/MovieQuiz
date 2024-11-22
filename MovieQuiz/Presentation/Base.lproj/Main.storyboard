@@ -55,6 +55,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="El8-gD-1PT" secondAttribute="height" multiplier="2 : 3" id="XhA-l0-Eql"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y11-m7-48E" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="624.33333333333337" width="374" height="1.6666666666666288"/>
@@ -141,9 +146,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="IF7-Ol-piX" id="I0p-5z-8ab"/>
                         <outlet property="imageView" destination="El8-gD-1PT" id="eIm-Wc-k2v"/>
-                        <outlet property="noButton" destination="Gi6-wn-wTg" id="tfI-3w-EFY"/>
+                        <outlet property="noButton" destination="Gi6-wn-wTg" id="IMV-Qk-Cgn"/>
                         <outlet property="textLabel" destination="Y11-m7-48E" id="kdQ-iv-4Ru"/>
-                        <outlet property="yesButton" destination="1Nl-JZ-i5M" id="MUh-w8-D0Y"/>
+                        <outlet property="yesButton" destination="1Nl-JZ-i5M" id="cYZ-0G-izx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
