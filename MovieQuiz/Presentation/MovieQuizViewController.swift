@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -19,19 +19,31 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex: Int = .zero
     private var correctAnswers: Int = .zero
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactory = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
+        
+        questionFactory = QuestionFactory(delegate: self)
+        guard let questionFactory = questionFactory else { return }
+        questionFactory.requestNextQuestion()
+    }
+    
+    //MARK: - QuestionFactoryDelegate
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else { return }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
         }
     }
     
+    // MARK: - Actions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else { return }
         let givenAnswer = true
@@ -48,6 +60,7 @@ final class MovieQuizViewController: UIViewController {
         changeStateButton(isEnabled: false)
     }
     
+    // MARK: - Private functions
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -93,12 +106,8 @@ final class MovieQuizViewController: UIViewController {
         } else {
             currentQuestionIndex += 1
             
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let viewModel = convert(model: nextQuestion)
-                
-                show(quiz: viewModel)
-            }
+            guard let questionFactory = questionFactory else { return }
+            questionFactory.requestNextQuestion()
         }
     }
     
@@ -113,12 +122,8 @@ final class MovieQuizViewController: UIViewController {
             self.currentQuestionIndex = .zero
             self.correctAnswers = .zero
             
-            if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = firstQuestion
-                let viewModel = self.convert(model: firstQuestion)
-                
-                self.show(quiz: viewModel)
-            }
+            guard let questionFactory = questionFactory else { return }
+            questionFactory.self.requestNextQuestion()
         }
         
         alert.addAction(action)
