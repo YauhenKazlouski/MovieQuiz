@@ -16,6 +16,9 @@
 		7C19F4652D01D02A001EE9A6 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C19F4642D01D02A001EE9A6 /* AlertModel.swift */; };
 		7C19F4672D01D1D7001EE9A6 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C19F4662D01D1D7001EE9A6 /* AlertPresenter.swift */; };
 		7C19F46B2D01FC54001EE9A6 /* AlertPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C19F46A2D01FC54001EE9A6 /* AlertPresenterProtocol.swift */; };
+		7C19F46D2D030D95001EE9A6 /* StatisticServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C19F46C2D030D95001EE9A6 /* StatisticServiceProtocol.swift */; };
+		7C19F46F2D030EC9001EE9A6 /* GameResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C19F46E2D030EC9001EE9A6 /* GameResultModel.swift */; };
+		7C19F4712D031143001EE9A6 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C19F4702D031143001EE9A6 /* StatisticService.swift */; };
 		7C7CE0D42CEA39DF007D206B /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C7CE0D22CEA39DF007D206B /* YS Display-Medium.ttf */; };
 		7C7CE0D52CEA39DF007D206B /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C7CE0D32CEA39DF007D206B /* YS Display-Bold.ttf */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
@@ -38,6 +41,9 @@
 		7C19F4642D01D02A001EE9A6 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		7C19F4662D01D1D7001EE9A6 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		7C19F46A2D01FC54001EE9A6 /* AlertPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterProtocol.swift; sourceTree = "<group>"; };
+		7C19F46C2D030D95001EE9A6 /* StatisticServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceProtocol.swift; sourceTree = "<group>"; };
+		7C19F46E2D030EC9001EE9A6 /* GameResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameResultModel.swift; sourceTree = "<group>"; };
+		7C19F4702D031143001EE9A6 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		7C7CE0D22CEA39DF007D206B /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		7C7CE0D32CEA39DF007D206B /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +76,8 @@
 				7C19F4602D0059A6001EE9A6 /* QuestionFactoryProtocol.swift */,
 				7C19F4622D009CCD001EE9A6 /* QuestionFactoryDelegate.swift */,
 				7C19F46A2D01FC54001EE9A6 /* AlertPresenterProtocol.swift */,
+				7C19F46C2D030D95001EE9A6 /* StatisticServiceProtocol.swift */,
+				7C19F4702D031143001EE9A6 /* StatisticService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -81,6 +89,7 @@
 				7C19F45A2CF8B209001EE9A6 /* QuizStepViewModel.swift */,
 				7C19F45C2CF8B268001EE9A6 /* QuizResultsViewModel.swift */,
 				7C19F45E2CF8B29A001EE9A6 /* QuizQuestion.swift */,
+				7C19F46E2D030EC9001EE9A6 /* GameResultModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -224,16 +233,19 @@
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
+				7C19F46F2D030EC9001EE9A6 /* GameResultModel.swift in Sources */,
 				7C19F46B2D01FC54001EE9A6 /* AlertPresenterProtocol.swift in Sources */,
 				7C19F4652D01D02A001EE9A6 /* AlertModel.swift in Sources */,
 				7C19F4632D009CCD001EE9A6 /* QuestionFactoryDelegate.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
 				7C19F4672D01D1D7001EE9A6 /* AlertPresenter.swift in Sources */,
+				7C19F46D2D030D95001EE9A6 /* StatisticServiceProtocol.swift in Sources */,
 				7C19F45D2CF8B268001EE9A6 /* QuizResultsViewModel.swift in Sources */,
 				7C19F4582CF8ABA0001EE9A6 /* QuestionFactory.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
 				7C19F4612D0059A6001EE9A6 /* QuestionFactoryProtocol.swift in Sources */,
 				7C19F45B2CF8B209001EE9A6 /* QuizStepViewModel.swift in Sources */,
+				7C19F4712D031143001EE9A6 /* StatisticService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,7 +401,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -419,7 +432,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

@@ -13,8 +13,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    
     private var alertPresenter: AlertPresenterProtocol?
+    private var statisticService: StatisticServiceProtocol?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -24,7 +24,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let questionFactory = questionFactory else { return }
         questionFactory.requestNextQuestion()
         
-        alertPresenter = AlertPresenter(viewController: self)
+        alertPresenter = AlertPresenter(delegate: self)
+        statisticService = StatisticService()
     }
     
     //MARK: - QuestionFactoryDelegate
@@ -90,12 +91,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = correctAnswers == questionsAmount ?
-            "Поздравляем, вы ответили на 10 из 10!" :
-            "Вы ответили на \(correctAnswers) из 10, попробуйте еще раз!"
+            guard let statisticService else { return }
+            statisticService.store(correct: self.correctAnswers, total: self.questionsAmount)
+            let message = statisticService.getGamesStatistic(correct: self.correctAnswers, total: self.questionsAmount)
+//            let text = correctAnswers == questionsAmount ?
+//            "Поздравляем, вы ответили на 10 из 10!" :
+//            "Вы ответили на \(correctAnswers) из 10, попробуйте еще раз!"
             
             let alertModel = AlertModel(title: "Этот раунд окончен",
-                                        message: text,
+                                        message: message,
                                         buttonText: "Сыграть еще раз",
                                         completion: restartQuiz
             )
