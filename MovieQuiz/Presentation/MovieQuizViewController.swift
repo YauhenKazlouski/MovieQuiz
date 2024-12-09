@@ -93,11 +93,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if currentQuestionIndex == questionsAmount - 1 {
             guard let statisticService else { return }
             statisticService.store(correct: self.correctAnswers, total: self.questionsAmount)
-            let message = statisticService.getGamesStatistic(correct: self.correctAnswers, total: self.questionsAmount)
-//            let text = correctAnswers == questionsAmount ?
-//            "Поздравляем, вы ответили на 10 из 10!" :
-//            "Вы ответили на \(correctAnswers) из 10, попробуйте еще раз!"
-            
+            let message = getGamesStatistic(correct: self.correctAnswers, total: self.questionsAmount)
             let alertModel = AlertModel(title: "Этот раунд окончен",
                                         message: message,
                                         buttonText: "Сыграть еще раз",
@@ -113,6 +109,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let questionFactory = questionFactory else { return }
             questionFactory.requestNextQuestion()
         }
+    }
+    
+    private func getGamesStatistic(correct count: Int, total amount: Int) -> String {
+        guard let statisticService else { return "Ваш результат: \(count)/\(amount)"}
+        let score = "Ваш результат: \(count)/\(amount)"
+        let gamesCount = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+        let record = "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
+        let totalAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        
+        return [score, gamesCount, record, totalAccuracy].joined(separator: "\n")
     }
     
     private func restartQuiz() {
