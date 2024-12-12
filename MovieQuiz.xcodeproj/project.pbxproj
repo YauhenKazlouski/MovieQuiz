@@ -72,12 +72,10 @@
 		7C19F4562CF8AB2D001EE9A6 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				7C19F4572CF8ABA0001EE9A6 /* QuestionFactory.swift */,
-				7C19F4602D0059A6001EE9A6 /* QuestionFactoryProtocol.swift */,
-				7C19F4622D009CCD001EE9A6 /* QuestionFactoryDelegate.swift */,
-				7C19F46A2D01FC54001EE9A6 /* AlertPresenterProtocol.swift */,
-				7C19F46C2D030D95001EE9A6 /* StatisticServiceProtocol.swift */,
 				7C19F4702D031143001EE9A6 /* StatisticService.swift */,
+				7C19F4572CF8ABA0001EE9A6 /* QuestionFactory.swift */,
+				7C61967B2D08B53B0006FF7D /* Delegates */,
+				7C61967A2D08B5280006FF7D /* Protocols */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -92,6 +90,24 @@
 				7C19F46E2D030EC9001EE9A6 /* GameResultModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		7C61967A2D08B5280006FF7D /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				7C19F46A2D01FC54001EE9A6 /* AlertPresenterProtocol.swift */,
+				7C19F46C2D030D95001EE9A6 /* StatisticServiceProtocol.swift */,
+				7C19F4602D0059A6001EE9A6 /* QuestionFactoryProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		7C61967B2D08B53B0006FF7D /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				7C19F4622D009CCD001EE9A6 /* QuestionFactoryDelegate.swift */,
+			);
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 		8F4738322848DE2A005DF65E /* Presentation */ = {

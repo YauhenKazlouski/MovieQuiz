@@ -92,12 +92,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
             guard let statisticService else { return }
-            statisticService.store(correct: self.correctAnswers, total: self.questionsAmount)
-            let message = getGamesStatistic(correct: self.correctAnswers, total: self.questionsAmount)
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            let message = getGamesStatistic(correct: correctAnswers, total: questionsAmount)
             let alertModel = AlertModel(title: "Этот раунд окончен",
                                         message: message,
                                         buttonText: "Сыграть еще раз",
-                                        completion: restartQuiz
+                                        completion: { [weak self] in
+                self?.currentQuestionIndex = .zero
+                self?.correctAnswers = .zero
+                guard let questionFactory = self?.questionFactory else { return }
+                questionFactory.requestNextQuestion()
+            }
             )
             
             guard let alertPresenter else { return }
@@ -119,13 +124,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let totalAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
         
         return [score, gamesCount, record, totalAccuracy].joined(separator: "\n")
-    }
-    
-    private func restartQuiz() {
-        guard let questionFactory = questionFactory  else { return }
-        currentQuestionIndex = .zero
-        correctAnswers = .zero
-        questionFactory.requestNextQuestion()
     }
     
     private func changeStateButton(isEnabled: Bool) {
