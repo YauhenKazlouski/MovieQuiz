@@ -86,9 +86,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         var message = result.text
         guard let statisticService else { return }
         statisticService.store(correct: correctAnswers, total: questionsAmount)
-        
-        let bestGame = statisticService.bestGame
-        
+                
         message = getGamesStatistic(correct: correctAnswers, total: questionsAmount)
         
         
@@ -117,16 +115,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             self.showNextQuestionOrResults()
-            self.imageView.layer.borderWidth = 0
+            self.imageView.layer.borderWidth = .zero
             self.changeStateButton(isEnabled: true)
         }
     }
     
     private func getGamesStatistic(correct count: Int, total amount: Int) -> String {
         guard let statisticService else { return "Ваш результат: \(count)/\(amount)"}
+        
+        let bestGame = statisticService.bestGame
+        
         let score = "Ваш результат: \(count)/\(amount)"
         let gamesCount = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-        let record = "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
+        let record = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
         let totalAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
         
         return [score, gamesCount, record, totalAccuracy].joined(separator: "\n")
@@ -162,8 +163,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                     message: message,
                                     buttonText: "Попробовать еще раз") { [weak self] in
             guard let self else { return }
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
+            self.currentQuestionIndex = .zero
+            self.correctAnswers = .zero
             
             self.questionFactory?.requestNextQuestion()
         }
