@@ -59,21 +59,13 @@ extension StatisticService: StatisticServiceProtocol {
     }
     
     func store(correct count: Int, total amount: Int) {
+        correctAnswers += count
+        gamesCount += 1
+        
         let newGame = GameResult(correct: count, total: amount, date: Date())
+        
         if newGame.isBetterThan(bestGame) {
             bestGame = newGame
         }
-        correctAnswers += count
-        gamesCount += 1
     }
-    
-//    func getGamesStatistic(correct count: Int, total amount: Int) -> String {
-//        let score = "Ваш результат: \(count)/\(amount)"
-//        let gamesCount = "Количество сыгранных квизов: \(gamesCount)"
-//        let record = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
-//        let totalAccuracy = "Средняя точность: \(String(format: "%.2f", totalAccuracy))%"
-//        
-//        return [score, gamesCount, record, totalAccuracy].joined(separator: "\n")
-//    }
-    
 }

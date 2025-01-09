@@ -164,12 +164,12 @@
 			isa = PBXGroup;
 			children = (
 				7C19F4592CF8AFA2001EE9A6 /* Models */,
+				7C19F4562CF8AB2D001EE9A6 /* Services */,
+				8F4738322848DE2A005DF65E /* Presentation */,
+				ADF0CF75283FDAA10075F54D /* Helpers */,
+				8F4738332848DE46005DF65E /* Resources */,
 				AD1ABAB12831907B00B3E448 /* AppDelegate.swift */,
 				AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */,
-				ADF0CF75283FDAA10075F54D /* Helpers */,
-				8F4738322848DE2A005DF65E /* Presentation */,
-				8F4738332848DE46005DF65E /* Resources */,
-				7C19F4562CF8AB2D001EE9A6 /* Services */,
 			);
 			path = MovieQuiz;
 			sourceTree = "<group>";

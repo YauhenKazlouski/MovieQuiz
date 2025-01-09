@@ -34,8 +34,8 @@ final class QuestionFactory: QuestionFactoryProtocol {
     }
     
     func loadData() {
-        moviesLoader.loadMovies { [weak self] result in
-            DispatchQueue.main.async {
+        moviesLoader.loadMovies { result in
+            DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 switch result {
                 case .success(let mostPopularMovies):
@@ -50,10 +50,11 @@ final class QuestionFactory: QuestionFactoryProtocol {
     
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
-            guard let self else { return }
-            let index = (0..<self.movies.count).randomElement() ?? 0
-            
-            guard let movie = self.movies[safe: index] else { return }
+            guard
+                let self,
+                let index = (0..<self.movies.count).randomElement(),
+                let movie = self.movies[safe: index]
+            else { return }
             
             var imageData = Data()
             
