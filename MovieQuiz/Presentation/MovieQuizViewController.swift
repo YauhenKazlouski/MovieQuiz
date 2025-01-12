@@ -10,14 +10,12 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
     private var alertPresenter: AlertPresenterProtocol?
-    private var statisticService: StatisticServiceProtocol?
     private var presenter: MovieQuizPresenter!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        statisticService = StatisticService()
         alertPresenter = AlertPresenter(delegate: self)
         presenter = MovieQuizPresenter(viewController: self)
         
@@ -45,10 +43,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     func show(quiz result: QuizResultsViewModel) {
-        guard let statisticService else { return }
-        statisticService.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
-        
-        var message = getGamesStatistic(correct: presenter.correctAnswers, total: presenter.questionsAmount)
+        let message = presenter.makeResultsMessage()
         
         let alertModel = AlertModel(title: result.title,
                                     message: message,
@@ -59,22 +54,6 @@ final class MovieQuizViewController: UIViewController {
         
         guard let alertPresenter else { return }
         alertPresenter.showAlert(with: alertModel)
-    }
-    
-    func showAnswerResult(isCorrect: Bool) {
-        presenter.didAnswer(isCorrectAnswer: isCorrect)
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 20
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            self.presenter.showNextQuestionOrResults()
-            
-            self.imageView.layer.borderWidth = .zero
-            self.changeStateButton(isEnabled: true)
-        }
     }
     
     func showLoadingIndicator() {
@@ -99,20 +78,19 @@ final class MovieQuizViewController: UIViewController {
         activityIndicator.isHidden = true
     }
     
-    //MARK: - Private functions
+    func highlightImageBorder(isCorrectAnswer: Bool) {
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 20
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+     }
     
-    private func getGamesStatistic(correct count: Int, total amount: Int) -> String {
-        guard let statisticService else { return "Ваш результат: \(count)/\(amount)"}
-        
-        let bestGame = statisticService.bestGame
-        
-        let score = "Ваш результат: \(count)/\(amount)"
-        let gamesCount = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-        let record = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
-        let totalAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
-        
-        return [score, gamesCount, record, totalAccuracy].joined(separator: "\n")
+    func resetStateButtonAndBorder() {
+        imageView.layer.borderWidth = .zero
+        changeStateButton(isEnabled: true)
     }
+    
+    //MARK: - Private functions
     
     private func changeStateButton(isEnabled: Bool) {
         noButton.isEnabled = isEnabled
