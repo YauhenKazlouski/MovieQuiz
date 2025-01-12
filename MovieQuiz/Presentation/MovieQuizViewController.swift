@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -9,37 +9,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
-    private var correctAnswers: Int = .zero
-    private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticServiceProtocol?
-    private let presenter = MovieQuizPresenter()
+    private var presenter: MovieQuizPresenter!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticService()
         alertPresenter = AlertPresenter(delegate: self)
-        presenter.viewController = self
+        presenter = MovieQuizPresenter(viewController: self)
         
-        questionFactory?.loadData()
-        showLoadingIndicator()
-    }
-    
-    //MARK: - QuestionFactoryDelegate
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        presenter.didReceiveNextQuestion(question: question)
-    }
-    
-    func didLoadDataFromServer() {
-        activityIndicator.isHidden = true
-        questionFactory?.requestNextQuestion()
-    }
-    
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
     }
     
     // MARK: - Actions
@@ -55,8 +36,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         changeStateButton(isEnabled: false)
     }
     
-    // MARK: - Private functions
-        
+    // MARK: - Public functions
+    
     func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -64,20 +45,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     func show(quiz result: QuizResultsViewModel) {
-        var message = result.text
         guard let statisticService else { return }
-        statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
-                
-        message = getGamesStatistic(correct: correctAnswers, total: presenter.questionsAmount)
+        statisticService.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
         
+        var message = getGamesStatistic(correct: presenter.correctAnswers, total: presenter.questionsAmount)
         
         let alertModel = AlertModel(title: result.title,
                                     message: message,
                                     buttonText: result.buttonText) {[weak self] in
-            guard let self, let questionFactory else { return }
-            presenter.resetQuestionIndex()
-            self.correctAnswers = .zero
-            questionFactory.requestNextQuestion()
+            guard let self else { return }
+            presenter.restartGame()
         }
         
         guard let alertPresenter else { return }
@@ -85,9 +62,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     func showAnswerResult(isCorrect: Bool) {
-        if isCorrect {
-            correctAnswers += 1
-        }
+        presenter.didAnswer(isCorrectAnswer: isCorrect)
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
@@ -95,14 +70,36 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-            self.presenter.correctAnswers = self.correctAnswers
-            self.presenter.questionFactory = self.questionFactory
             self.presenter.showNextQuestionOrResults()
             
             self.imageView.layer.borderWidth = .zero
             self.changeStateButton(isEnabled: true)
         }
     }
+    
+    func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    func showNetworkError(message: String) {
+        activityIndicator.isHidden = true
+        
+        let alertModel = AlertModel(title: "Ошибка",
+                                    message: message,
+                                    buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self else { return }
+            self.presenter.restartGame()
+        }
+        
+        alertPresenter?.showAlert(with: alertModel)
+    }
+    
+    func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
+    //MARK: - Private functions
     
     private func getGamesStatistic(correct count: Int, total amount: Int) -> String {
         guard let statisticService else { return "Ваш результат: \(count)/\(amount)"}
@@ -116,31 +113,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         return [score, gamesCount, record, totalAccuracy].joined(separator: "\n")
     }
-        
-    private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-    }
-    
-    private func showNetworkError(message: String) {
-        activityIndicator.isHidden = true
-        
-        let alertModel = AlertModel(title: "Ошибка",
-                                    message: message,
-                                    buttonText: "Попробовать еще раз") { [weak self] in
-            guard let self else { return }
-            presenter.resetQuestionIndex()
-            self.correctAnswers = .zero
-            
-            self.questionFactory?.requestNextQuestion()
-        }
-        
-        alertPresenter?.showAlert(with: alertModel)
-    }
     
     private func changeStateButton(isEnabled: Bool) {
         noButton.isEnabled = isEnabled
         yesButton.isEnabled = isEnabled
     }
+    
     
 }
