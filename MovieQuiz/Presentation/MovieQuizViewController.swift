@@ -19,6 +19,7 @@ final class MovieQuizViewController: UIViewController {
         alertPresenter = AlertPresenter(delegate: self)
         presenter = MovieQuizPresenter(viewController: self)
         
+        imageView.layer.cornerRadius = 20
     }
     
     // MARK: - Actions
@@ -37,6 +38,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Public functions
     
     func show(quiz step: QuizStepViewModel) {
+        imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
@@ -62,7 +64,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     func showNetworkError(message: String) {
-        activityIndicator.isHidden = true
+        hideLoadingIndicator()
         
         let alertModel = AlertModel(title: "Ошибка",
                                     message: message,
@@ -81,12 +83,10 @@ final class MovieQuizViewController: UIViewController {
     func highlightImageBorder(isCorrectAnswer: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
      }
     
-    func resetStateButtonAndBorder() {
-        imageView.layer.borderWidth = .zero
+    func resetStateButton() {
         changeStateButton(isEnabled: true)
     }
     
