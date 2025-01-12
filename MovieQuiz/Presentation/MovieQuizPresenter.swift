@@ -18,8 +18,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private weak var viewController: MovieQuizViewController?
     private let statisticService: StatisticServiceProtocol!
     
-    init(viewController: MovieQuizViewController) {
-        self.viewController = viewController
+    init(viewController: MovieQuizViewControllerProtocol = MovieQuizViewController()) {
+        self.viewController = viewController as? MovieQuizViewController
         
         statisticService = StatisticService()
         
@@ -27,6 +27,14 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
     }
+    
+//    init(viewController: MovieQuizViewControllerProtocol = MovieQuizViewController()) {
+//            self.viewController = viewController as? MovieQuizViewController
+//                
+//                questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+//                questionFactory?.loadData()
+//                
+//            }
     
     //MARK: - QuestionFactoryDelegate
     
@@ -82,7 +90,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     //MARK: - Private functions
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+    func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,

@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -58,11 +58,6 @@ final class MovieQuizViewController: UIViewController {
         alertPresenter.showAlert(with: alertModel)
     }
     
-    func showLoadingIndicator() {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-    }
-    
     func showNetworkError(message: String) {
         hideLoadingIndicator()
         
@@ -76,6 +71,11 @@ final class MovieQuizViewController: UIViewController {
         alertPresenter?.showAlert(with: alertModel)
     }
     
+    func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
     func hideLoadingIndicator() {
         activityIndicator.isHidden = true
     }
@@ -84,7 +84,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-     }
+    }
     
     func resetStateButton() {
         changeStateButton(isEnabled: true)
@@ -96,6 +96,4 @@ final class MovieQuizViewController: UIViewController {
         noButton.isEnabled = isEnabled
         yesButton.isEnabled = isEnabled
     }
-    
-    
 }
