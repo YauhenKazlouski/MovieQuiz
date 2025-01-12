@@ -11,8 +11,9 @@ final class MovieQuizPresenter {
     
     let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = .zero
-    
+    var correctAnswers: Int = .zero
     var currentQuestion: QuizQuestion?
+    var questionFactory: QuestionFactoryProtocol?
     weak var viewController: MovieQuizViewController?
     
     func isLastQuestion() -> Bool {
@@ -35,18 +36,45 @@ final class MovieQuizPresenter {
     }
 
     func yesButtonClicked() {
+        didAnswer(isYes: true)
+    }
+    
+    func noButtonClicked() {
+        didAnswer(isYes: false)
+    }
+    
+    private func didAnswer(isYes: Bool) {
         guard let currentQuestion else { return }
         
-        let givenAnswer = true
+        let givenAnswer = isYes
         
         viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    func noButtonClicked() {
-        guard let currentQuestion else { return }
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question else { return }
         
-        let givenAnswer = false
-        
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.show(quiz: viewModel)
+        }
     }
+    
+    func showNextQuestionOrResults() {
+        if self.isLastQuestion() {
+            let text = "Вы ответили на \(correctAnswers) из 10, попробуйте еще раз!"
+            
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            viewController?.show(quiz: viewModel)
+            
+        } else {
+            self.switchToNextQuestion()
+            questionFactory?.requestNextQuestion()
+        }
+    }
+
 }
