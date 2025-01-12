@@ -26,6 +26,7 @@ class AlertPresenter: AlertPresenterProtocol {
         }
         
         alert.addAction(action)
+        alert.view.accessibilityIdentifier = "Game results"
         
         guard let delegate else { return }
         delegate.present(alert, animated: true, completion: nil)
